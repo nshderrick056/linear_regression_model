@@ -1,0 +1,30 @@
+[project]
+name = "rwanda-crop-price-prediction"
+version = "0.1.0"
+description = "Predict retail crop prices in Rwandan markets so farmers can choose where and when to sell."
+requires-python = ">=3.12,<3.13"
+# Runtime dependencies: everything the API needs on Render.
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn>=0.32",
+    "pydantic>=2.9",
+    "python-multipart>=0.0.12",
+    "scikit-learn==1.7.2",
+    "pandas>=2.2",
+    "numpy>=2.1",
+    "joblib>=1.4",
+]
+
+[dependency-groups]
+# Notebook-only tools. Not exported to API/requirements.txt, which keeps the Render build small.
+# Install with: uv sync --group notebook
+notebook = [
+    "matplotlib>=3.9",
+    "seaborn>=0.13",
+    "jupyter>=1.1",
+    "ipykernel>=6.29",
+    "nbconvert>=7.16",
+]
+
+[tool.uv]
+package = false
