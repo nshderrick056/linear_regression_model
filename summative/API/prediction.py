@@ -121,7 +121,7 @@ app = FastAPI(
 #     user's credentials.
 # Extra origins can be added without code changes via the ALLOWED_ORIGINS env var (comma-separated).
 ALLOWED_ORIGINS = [
-    "https://rwanda-crop-price-api.onrender.com",
+    "https://rwanda-crop-price-api-ryiy.onrender.com",
     "http://localhost:5000",
     "http://127.0.0.1:5000",
 ] + [o.strip() for o in os.getenv("ALLOWED_ORIGINS", "").split(",") if o.strip()]

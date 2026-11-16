@@ -10,7 +10,7 @@ This project predicts the retail price (RWF per kg) of a crop in a given market 
 It holds about 158,000 monthly market price records (2000–2026) for 65 commodities in 100+ Rwandan markets, with 16 columns mixing numeric and categorical data (date, province, district, market, latitude, longitude, category, commodity, unit, price type, currency, price and more). Data was downloaded in November 2026, and a copy is stored in `summative/linear_regression/data/`. The model uses the retail, per-kg slice (about 129,000 rows).
 
 ## API (Swagger UI)
-Public Swagger UI: **https://rwanda-crop-price-api.onrender.com/docs**
+Public Swagger UI: **https://rwanda-crop-price-api-ryiy.onrender.com/docs**
 
 > The free Render service sleeps after 15 minutes without traffic. The first request can take up to a minute while it wakes up.
 
@@ -61,7 +61,7 @@ uv run uvicorn prediction:app --reload
 Then open <http://127.0.0.1:8000/docs>.
 
 ## Deploy the API on Render
-1. Push this repository to GitHub.
+1. Push this repository to GitHub. (Quickest: in Render choose **New → Blueprint** and pick the repo; `render.yaml` holds the settings below.)
 2. On [Render](https://render.com), choose **New → Web Service** and connect the repository.
 3. Use these settings:
    - **Root Directory:** `summative/API`

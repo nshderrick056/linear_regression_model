@@ -10,7 +10,7 @@ import 'package:http/http.dart' as http;
 /// (10.0.2.2 is how the Android emulator reaches the computer's localhost.)
 const String apiBaseUrl = String.fromEnvironment(
   'API_URL',
-  defaultValue: 'https://rwanda-crop-price-api.onrender.com',
+  defaultValue: 'https://rwanda-crop-price-api-ryiy.onrender.com',
 );
 
 void main() => runApp(const CropPriceApp());
