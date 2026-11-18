@@ -63,15 +63,48 @@ class _PredictionPageState extends State<PredictionPage> {
   final Map<String, TextEditingController> _controllers = {
     for (final spec in inputs) spec.key: TextEditingController(),
   };
+  final Map<String, FocusNode> _focusNodes = {
+    for (final spec in inputs) spec.key: FocusNode(),
+  };
+
+  /// Drop-down choices per field. Month is fixed; the 4 text inputs come from GET /options.
+  final Map<String, List<String>> _choices = {
+    'month': [for (var m = 1; m <= 12; m++) '$m'],
+  };
 
   bool _loading = false;
   String? _result; // predicted price text
   String? _error; // readable error text
 
   @override
+  void initState() {
+    super.initState();
+    _loadOptions();
+  }
+
+  /// Fetches the accepted names so the user can pick instead of type. Also wakes a sleeping server.
+  Future<void> _loadOptions() async {
+    try {
+      final response = await http.get(Uri.parse('$apiBaseUrl/options')).timeout(const Duration(seconds: 90));
+      if (response.statusCode != 200 || !mounted) return;
+      final data = jsonDecode(response.body) as Map<String, dynamic>;
+      setState(() {
+        for (final e in data.entries) {
+          _choices[e.key] = List<String>.from(e.value as List);
+        }
+      });
+    } catch (_) {
+      // Suggestions are optional: if the server can't be reached, typing still works.
+    }
+  }
+
+  @override
   void dispose() {
     for (final c in _controllers.values) {
       c.dispose();
+    }
+    for (final f in _focusNodes.values) {
+      f.dispose();
     }
     super.dispose();
   }
@@ -175,16 +208,28 @@ class _PredictionPageState extends State<PredictionPage> {
             ),
             const SizedBox(height: 16),
             for (final spec in inputs) ...[
-              TextField(
-                controller: _controllers[spec.key],
-                keyboardType: spec.type == FieldType.text
-                    ? TextInputType.text
-                    : TextInputType.numberWithOptions(decimal: spec.type == FieldType.decimal, signed: true),
-                textInputAction: TextInputAction.next,
-                decoration: InputDecoration(
-                  labelText: spec.label,
-                  hintText: spec.hint,
-                  border: const OutlineInputBorder(),
+              // A text field with a drop-down list: tap to pick, or type to filter the list.
+              Autocomplete<String>(
+                textEditingController: _controllers[spec.key],
+                focusNode: _focusNodes[spec.key],
+                optionsBuilder: (value) {
+                  final query = value.text.trim().toLowerCase();
+                  return (_choices[spec.key] ?? const <String>[])
+                      .where((option) => option.toLowerCase().contains(query));
+                },
+                fieldViewBuilder: (context, controller, focusNode, _) => TextField(
+                  controller: controller,
+                  focusNode: focusNode,
+                  keyboardType: spec.type == FieldType.text
+                      ? TextInputType.text
+                      : TextInputType.numberWithOptions(decimal: spec.type == FieldType.decimal, signed: true),
+                  textInputAction: TextInputAction.next,
+                  decoration: InputDecoration(
+                    labelText: spec.label,
+                    hintText: spec.hint,
+                    border: const OutlineInputBorder(),
+                    suffixIcon: _choices.containsKey(spec.key) ? const Icon(Icons.arrow_drop_down) : null,
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
