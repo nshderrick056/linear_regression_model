@@ -25,7 +25,7 @@ Public Swagger UI: **https://rwanda-crop-price-api-ryiy.onrender.com/docs**
 To try retraining, upload [`summative/API/sample_new_data.csv`](summative/API/sample_new_data.csv) (June–August 2026 prices that were held back from training) to `/retrain`, then check `/retrain/status`.
 
 ## Video demo
-YouTube: **YOUTUBE_LINK_HERE**
+YouTube: <https://youtu.be/WzHS5MS0KCw>
 
 ## Run the mobile app
 1. Install the [Flutter SDK](https://docs.flutter.dev/get-started/install) and Android Studio, then check the setup:
