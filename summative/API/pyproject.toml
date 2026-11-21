@@ -1,0 +1,19 @@
+[project]
+name = "rwanda-crop-price-api"
+version = "0.1.0"
+description = "FastAPI service that predicts retail crop prices in Rwandan markets (runs on Render)."
+requires-python = ">=3.12,<3.13"
+# Runtime dependencies only: everything the API needs on Render.
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn>=0.32",
+    "pydantic>=2.9",
+    "python-multipart>=0.0.12",
+    "scikit-learn==1.7.2",
+    "pandas>=2.2",
+    "numpy>=2.1",
+    "joblib>=1.4",
+]
+
+[tool.uv]
+package = false
